@@ -54,6 +54,8 @@ jobs:
   production:
     needs: [staging]
     runs-on: ubuntu-latest
+    environment: 
+      name: production
     steps:
       - run: |
           echo "After staging envirionment is deployed..." >> $GITHUB_STEP_SUMMARY
@@ -62,6 +64,7 @@ jobs:
           echo "- Deploy the artifact to the production environment" >> $GITHUB_STEP_SUMMARY
 
   test-production:
+    needs: [production]
     runs-on: ubuntu-latest
     steps:
       - run: echo "- Test the artifact in the production environment" >> $GITHUB_STEP_SUMMARY
