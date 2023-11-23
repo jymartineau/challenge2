@@ -11,55 +11,58 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: echo "### And we're off! :rocket:" >> $GITHUB_STEP_SUMMARY
+      - run: |
+          echo "### And we're off! :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "Build is kicked off" >> $GITHUB_STEP_SUMMARY
+          
 
   integration:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: echo "- Lint the code and run unit tests"
+      - run: echo "- Lint the code and run unit tests"  >> $GITHUB_STEP_SUMMARY
 
   test-artifact:
     needs: [integration]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: echo "- Simulate and test the artifact"
+      - run: echo "- Simulate and test the artifact" >> $GITHUB_STEP_SUMMARY
 
   development:
     needs: [test-artifact]
     runs-on: ubuntu-latest
     steps:
-      - run: echo "- Auto-deploy the artifact to the development environment"
+      - run: echo "- Auto-deploy the artifact to the development environment" >> $GITHUB_STEP_SUMMARY
         
   staging:
     needs: [development]
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "After development envirionment is deployed..."
-          echo "and after the artifact tests have passed..."
-          echo "- Auto-deploy the artifact to the staging environment"
+          echo "After development envirionment is deployed..." >> $GITHUB_STEP_SUMMARY
+          echo "and after the artifact tests have passed..." >> $GITHUB_STEP_SUMMARY
+          echo "- Auto-deploy the artifact to the staging environment" >> $GITHUB_STEP_SUMMARY
 
   test-staging:
     needs: [staging]
     runs-on: ubuntu-latest
     steps:
-      - run: echo "- Test the staging environment"
+      - run: echo "- Test the staging environment" >> $GITHUB_STEP_SUMMARY
         
   production:
     needs: [staging]
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "After staging envirionment is deployed..."
-          echo "and after the staging tests have passed..."
-          echo "require a review before deploying to the production envirionment, then..."
-          echo "- Deploy the artifact to the production environment"
+          echo "After staging envirionment is deployed..." >> $GITHUB_STEP_SUMMARY
+          echo "and after the staging tests have passed..." >> $GITHUB_STEP_SUMMARY
+          echo "require a review before deploying to the production envirionment, then..." >> $GITHUB_STEP_SUMMARY
+          echo "- Deploy the artifact to the production environment" >> $GITHUB_STEP_SUMMARY
 
   test-production:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "- Test the artifact in the production environment"
-      - run: echo "# All tests and deployments have completed successfully!"
+      - run: echo "- Test the artifact in the production environment" >> $GITHUB_STEP_SUMMARY
+      - run: echo "# All tests and deployments have completed successfully!" >> $GITHUB_STEP_SUMMARY
