@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: echo "- Build the artifact"
+      - run: echo "### And we're off! :rocket:" >> $GITHUB_STEP_SUMMARY
 
   integration:
     needs: [build]
