@@ -14,7 +14,6 @@ jobs:
       - run: |
           echo "### And we're off! :rocket:" >> $GITHUB_STEP_SUMMARY
           echo "Build is kicked off" >> $GITHUB_STEP_SUMMARY
-          
 
   integration:
     needs: [build]
@@ -32,12 +31,14 @@ jobs:
 
   development:
     needs: [test-artifact]
+    environment: development
     runs-on: ubuntu-latest
     steps:
       - run: echo "- Auto-deploy the artifact to the development environment" >> $GITHUB_STEP_SUMMARY
         
   staging:
-    needs: [development]
+    needs: [test-artifact, integration]
+    environment: staging
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -52,7 +53,7 @@ jobs:
       - run: echo "- Test the staging environment" >> $GITHUB_STEP_SUMMARY
         
   production:
-    needs: [staging]
+    needs: [staging, test-staging]
     runs-on: ubuntu-latest
     environment: 
       name: production
